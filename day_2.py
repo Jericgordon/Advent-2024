@@ -33,23 +33,38 @@ def level_checker(report:list) -> bool:
     else:
         return False
     for l_index in range(len(report) - 1): #check < 3 dif, in right direction
-        diff = report[l_index] - report[l_index +1]
-        if abs(diff) > 3 or abs(diff) < 1: 
+        if not checks_two_values(report[l_index],report[l_index +1],sign):
             return False
-        #diff and sign need to be either both negative or both positve
-        if sign * diff < 0:
-            return False
-        
     return True
 
 
+def brute_force_part_two(data:list):
+    safe_levels = 0
+    for report in data:
+        if level_checker(report):
+            safe_levels += 1
+        else:
+            if brute_force_helper(report):
+                safe_levels += 1
+    return safe_levels
+
+def brute_force_helper(report:list):
+    for level_index in range(len(report)):
+        if level_checker(report[:level_index] +report[level_index +1:]):
+            return True
+    return False
+
+def main():
+    print(brute_force_part_two(input_matrix)) #558
+    print(part_one(input_matrix)) #524
+    print(part_two(input_matrix)) #570
 
 def part_two(data:list) -> int:
     safe_levels = 0
     for report in data:
         if safe_level_checker(report):
             safe_levels += 1
-            if not level_checker(report):
+            if not level_checker(report) and not brute_force_helper(report):
                 print("safe_level",report)
     return safe_levels
         
@@ -60,35 +75,33 @@ def level_checker_helper(report:list,sign) -> bool:
             return False
     return True
 
-def safe_level_checker(report:list):
-    # find up or down first
+def find_sign(report_beginning:list):
     sign = 0
-    for num_index in range(4):
-        temp = report[num_index] - report[num_index + 1]
+    for num_index in range(3):
+        temp = report_beginning[num_index] - report_beginning[num_index + 1]
         if temp > 0:
             sign += 1
         if temp < 0:
             sign += -1
     if sign > 0:
-        sign = 1 #safe_level 
+        return 1
     elif sign < 0:
-        sign = -1
-    else:
+        return -1
+    return 0
+
+def safe_level_checker(report:list):
+    # find up or down first
+    sign = find_sign(report[:4])
+    if sign == 0: #check to maek
         return False
-    print("sign", sign) 
     for l_index in range(len(report) - 1): #check < 3 dif, in right direction
         if not checks_two_values(report[l_index],report[l_index + 1],sign):
-            print(report[l_index],report[l_index + 1])
             try:
                 if checks_two_values(report[l_index],report[l_index + 2],sign) or checks_two_values(report[l_index +1],report[l_index + 2],sign):
-                    print(checks_two_values(report[l_index],report[l_index + 2],sign))
-                    print(checks_two_values(report[l_index +1],report[l_index + 2],sign))
                     return level_checker_helper(report[l_index+1:],sign)
                 return False
             except IndexError:
-                #print(f"error on index {l_index},{l_index + 2}",report)
-                return True
- # [# #] # 
+                return True 
     return True
         
 def checks_two_values(val1,val2,sign) -> bool:
@@ -98,31 +111,10 @@ def checks_two_values(val1,val2,sign) -> bool:
     if sign * diff < 0: #diff and sign need to be either both negative or both positve
         return False
     return True
-#check first 2 numbers up or down
-#check also within 3
 
-#subsequent going same as first 2
-#check abs dif < 3
 
-# print(part_two(input_matrix))
 
-# test_level = [9, 7, 6, 2, 1]
-# print(safe_level_checker(test_level))
 
-checks_two_values(7,5,1)
-checks_two_values(5,7,1)
-checks_two_values(5,7,-1)
-checks_two_values(7,5,-1)
-checks_two_values(9,5,-1)
-checks_two_values(3,8,1)
+#print(part_two(input_matrix))
 
-# print(level_checker_helper(test_level))
-
-# test2 = [32, 36, 36, 38, 45]
-test3 = [38, 45, 48, 49, 52, 53, 54, 54]
-
-test4 = [45, 48, 49, 52, 53, 54, 54]
-
-test5 = [31, 32, 30, 33, 34, 37]
-print(safe_level_checker(test5))
-#print("final verdict",safe_level_checker(test3))
+main()
