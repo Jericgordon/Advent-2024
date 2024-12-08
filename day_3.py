@@ -18,5 +18,7 @@ def part_one(input:str):
         sum += int(nums.group(1)) * int(nums.group(2))
     return sum
 
+def part_two(input: str):
+
 if __name__ == '__main__':
     main()
