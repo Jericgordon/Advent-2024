@@ -4,10 +4,9 @@ list2 = [4,3,5,3,9,3]
 
 real_list_1 = []
 real_list_2 = []
-with(open("message.txt",'r')) as message:
+with(open("day_1.txt",'r')) as message:
     string = message.readline()
     while string != None and string != "":
-        print(string)
         numbers = re.match("([0-9]+)   ([0-9]+)",string)
         if numbers != None:
             real_list_1.append(int(numbers.group(1)))
@@ -44,7 +43,7 @@ def part_two(list1,list2) -> int:
 
 
 #print(part_one(real_list_1,real_list_2))
-#print(part_two(real_list_1,real_list_2))
+print(part_two(real_list_1,real_list_2))
 
 
 

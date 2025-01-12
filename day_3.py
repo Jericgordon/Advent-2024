@@ -8,9 +8,9 @@ def main():
             input_string += string
             string = message.readline()
 
-    #print(part_one(input_string))
+    print(part_one(input_string))
     print(part_two(input_string))
-    print(jen_part_two(input_string))
+    #print(jen_part_two(input_string))
 
 def part_one(input:str):
     list_of_mult = re.findall("mul[(][0-9]+,[0-9]+[)]",input) #mul(num,num)

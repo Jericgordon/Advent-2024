@@ -55,8 +55,8 @@ def brute_force_helper(report:list):
     return False
 
 def main():
+    print(part_one(input_matrix))
     print(brute_force_part_two(input_matrix)) #558
-    print(part_one(input_matrix)) #524
     print(part_two(input_matrix)) #570
 
 def part_two(data:list) -> int:
